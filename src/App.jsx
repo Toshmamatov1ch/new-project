@@ -10,6 +10,8 @@ import PostDetail from "./pages/public/PostDetail";
 import CreatPosts from "./pages/admin/CreatPosts";
 import Dashboard from "./pages/admin/Dashboard";
 import UpdatePosts from "./pages/admin/UpdatePosts";
+import Login from "./components/Login";
+import ErrorPage from "./pages/public/ErrorPage";
 
 function App() {
   const routers = createBrowserRouter([
@@ -30,6 +32,11 @@ function App() {
         {
           path: "posts/:id",
           element: <PostDetail />,
+        },
+
+        {
+          path: "/*",
+          element: <ErrorPage />,
         },
       ],
     },

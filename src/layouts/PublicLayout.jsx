@@ -8,17 +8,17 @@ import Footer from "../components/Footer";
 
 function PublicLayout() {
   return (
-    <>
-      <header>
+    <div className="min-h-screen flex flex-col ">
+      <header className=" bg-white/80 shadow-sm border border-b boder-gray-200 py-3.5">
         <Navbar />
       </header>
-      <main>
+      <main className="grow bg-gray-200 text-black">
         <Outlet />
       </main>
       <footer>
         <Footer />
       </footer>
-    </>
+    </div>
   );
 }
 
