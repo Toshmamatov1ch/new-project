@@ -1,7 +1,7 @@
 import React from "react";
 
 function PostDetail() {
-  return <div></div>;
+  return <div>Dratila</div>;
 }
 
 export default PostDetail;
