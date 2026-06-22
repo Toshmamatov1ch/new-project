@@ -13,21 +13,23 @@ function Navbar() {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <div className="flex itmes-center gap-8">
-            <Link
-              to={"/"}
-              className=" font-inter font-medium text-sm  leading-5 align-middle text-slate-900"
-            >
-              Home
-            </Link>
-            <Link
-              to={"/posts"}
-              className=" font-inter font-medium text-sm  leading-5 align-middle text-slate-900"
-            >
-              Posts
-            </Link>
+          <div className="flex items-center gap-8">
+            <div className="flex gap-8">
+              <Link
+                to={"/"}
+                className=" font-inter font-medium text-sm  leading-5 align-middle text-slate-900"
+              >
+                Home
+              </Link>
+              <Link
+                to={"/posts"}
+                className=" font-inter font-medium text-sm  leading-5 align-middle text-slate-900"
+              >
+                Posts
+              </Link>
+            </div>
             <Link to={"#"}>
-              <Button />
+              <Button text={"Login"} variant={"primary"} />
             </Link>
           </div>
         </div>

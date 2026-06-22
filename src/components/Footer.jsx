@@ -1,20 +1,17 @@
 import React from "react";
 import { FaTwitter, FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { FiEdit3 } from "react-icons/fi"; // Blogify logosi uchun qalam ikonkasini
-
+import Linksvg from "../assets/icons/Link.svg";
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer className="w-full bg-white text-gray-600 border-t border-gray-100 font-sans">
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        {/* Yuqori qism: 3 ta ustun */}
+      <div className="text-align py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12">
-          {/* 1-ustun: Logo va Tavsif */}
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-2 text-[#6366f1] font-bold text-xl">
-              <FiEdit3 className="text-2xl" />
-              <span>Blogify</span>
+            <div>
+              <img src={Linksvg} alt="Link svg" />
             </div>
-            <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
+            <p className="font-inter text-sm leading-5 align-middle">
               Create, read, and inspire. Discover amazing stories written by
               talented creators from around the world.
             </p>
@@ -22,40 +19,38 @@ function Footer() {
 
           {/* 2-ustun: Quick Links */}
           <div className="flex flex-col gap-4 md:pl-16">
-            <h3 className="text-[#0f172a] font-bold text-base tracking-wide">
+            <h3 className="font-inter font-semibold text-2xl leading-8 align-middle">
               Quick Links
             </h3>
-            <ul className="flex flex-col gap-3 text-sm text-gray-400">
+            <ul className="flex flex-col gap-3 font-inter text-sm text-gray-500">
               <li>
-                <a
-                  href="/home"
+                <Link
+                  to={"/"}
                   className="hover:text-[#6366f1] transition-colors"
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/posts"
+                <Link
+                  to={"/posts"}
                   className="hover:text-[#6366f1] transition-colors"
                 >
                   Posts
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/login"
+                <Link
+                  to={"/login"}
                   className="hover:text-[#6366f1] transition-colors"
                 >
                   Login
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
-
-          {/* 3-ustun: Connect (Ijtimoiy tarmoqlar) */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-[#0f172a] font-bold text-base tracking-wide">
+            <h3 className="text-[#0f172a] font-inter font-semibold text-2xl leading-8 align-middle">
               Connect
             </h3>
             <div className="flex items-center gap-5 text-gray-400 text-lg">
@@ -65,7 +60,7 @@ function Footer() {
                 rel="noreferrer"
                 className="hover:text-[#6366f1] transition-colors"
               >
-                <FaTwitter />
+                <FaTwitter className="w-6 h-6" />
               </a>
               <a
                 href="https://github.com"
@@ -73,7 +68,7 @@ function Footer() {
                 rel="noreferrer"
                 className="hover:text-[#6366f1] transition-colors"
               >
-                <FaGithub />
+                <FaGithub className="w-6 h-6" />
               </a>
               <a
                 href="https://linkedin.com"
@@ -81,7 +76,7 @@ function Footer() {
                 rel="noreferrer"
                 className="hover:text-[#6366f1] transition-colors"
               >
-                <FaLinkedinIn />
+                <FaLinkedinIn className="w-6 h-6" />
               </a>
             </div>
           </div>

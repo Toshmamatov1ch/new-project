@@ -9,10 +9,10 @@ import Footer from "../components/Footer";
 function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col ">
-      <header className=" bg-white/80 shadow-sm border border-b boder-gray-200 py-3.5">
+      <header className=" bg-[rgba(255, 255, 255, 0.8)] py-3.5 border-b border-gray-200  backdrop-blur-md ">
         <Navbar />
       </header>
-      <main className="grow bg-gray-200 text-black">
+      <main className="grow ">
         <Outlet />
       </main>
       <footer>
