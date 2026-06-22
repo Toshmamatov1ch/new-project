@@ -44,7 +44,7 @@ function PostDetail() {
   return (
     <div className="bg-white min-h-screen">
       {/* 1. Asosiy maqola konteyneri */}
-      <div className="max-w-[800px] mx-auto px-6 pt-12 pb-16">
+      <div className="max-w-200 mx-auto px-6 pt-12 pb-16">
         {/* Orqaga qaytish havolasi */}
         <Link
           to="/"
@@ -74,7 +74,7 @@ function PostDetail() {
         </span>
 
         {/* Katta Bosh Sarlavha (Title) */}
-        <h1 className="text-3xl md:text-[44px] font-extrabold text-[#111827] leading-tight md:leading-[52px] tracking-tight mb-6">
+        <h1 className="text-3xl md:text-[44px] font-extrabold text-[#111827] leading-tight md:leading-13 tracking-tight mb-6">
           {post.title}
         </h1>
 
@@ -115,16 +115,16 @@ function PostDetail() {
         </div>
 
         {/* Asosiy Katta Rasm */}
-        <div className="rounded-[24px] overflow-hidden shadow-sm mb-10 bg-gray-50 aspect-[16/9]">
+        <div className="rounded-6 overflow-hidden shadow-sm mb-10 bg-gray-50 aspect-video">
           <img
             src={post.image}
             alt={post.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-b-xl"
           />
         </div>
 
         {/* Maqola Batafsil Matni (Rich Text / Typography formatida) */}
-        <div className="text-[#374151] text-[17px] leading-[28px] space-y-6">
+        <div className="text-[#374151] text-[17px] leading-7 space-y-6">
           <p className="text-gray-600 font-normal">
             {post.desc} The landscape of web development is constantly evolving,
             and 2024 promises to bring exciting new changes that will shape how
@@ -185,14 +185,14 @@ function PostDetail() {
 
       {/* 2. Related Posts Qismi (Pastki kulrang fonli blok) */}
       <div className="bg-[#F9FAFB] border-t border-gray-100 py-16">
-        <div className="max-w-[1140px] mx-auto px-6">
+        <div className="max-w-285 mx-auto px-6">
           {/* Sarlavha */}
           <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-10">
             Related Posts
           </h2>
 
           {/* Grid orqali 2 ta related postni chiqarish */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[800px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-200">
             {relatedPosts.map((item) => (
               // Avval yozgan PostCard'imizni bu yerda qayta ishlatamiz
               <PostCard key={item.id} card={item} />
