@@ -5,7 +5,7 @@ import Linksvg from "../assets/icons/Link.svg";
 
 function Navbar() {
   return (
-    <div className="text-align">
+    <div className="text-align ">
       <div className=" flex items-center justify-between ">
         <div>
           <Link to={"/"}>

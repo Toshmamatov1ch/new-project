@@ -41,7 +41,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  to={"/login"}
+                  to={"/auth"}
                   className="hover:text-[#6366f1] transition-colors"
                 >
                   Login

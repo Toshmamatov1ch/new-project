@@ -1,6 +1,6 @@
-import React from "react";
-
 import Hero from "../../components/Hero";
+import Information from "../../components/Information";
+import LastestPosts from "../../components/LastestPosts";
 
 function Home() {
   return (
@@ -9,7 +9,13 @@ function Home() {
         <Hero />
       </section>
 
-      <section></section>
+      <section>
+        <Information />
+      </section>
+
+      <section>
+        <LastestPosts />
+      </section>
     </>
   );
 }
