@@ -28,7 +28,7 @@ function Navbar() {
                 Posts
               </Link>
             </div>
-            <Link to={"#"}>
+            <Link to={"/auth"}>
               <Button text={"Login"} variant={"primary"} />
             </Link>
           </div>
