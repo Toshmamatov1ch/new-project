@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // ⚠️ Link-ni import qilamiz
+import { Link } from "react-router-dom";
 
 function PostCard({ card }) {
   const categoryStyles = {
@@ -11,7 +11,7 @@ function PostCard({ card }) {
   if (!card) return null;
 
   return (
-    <div className="border border-[#E5E7EB] rounded-6 overflow-hidden flex flex-col h-full bg-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-2 group rounded-xl">
+    <div className="border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col h-full bg-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-2 group">
       {/* Rasm va Kategoriya qismi */}
       <div className="relative pt-[56.25%] overflow-hidden bg-gray-100">
         <img
@@ -19,8 +19,9 @@ function PostCard({ card }) {
           alt={card.title}
           className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
         />
+        {/* TO'G'RILANDI: Bu yerdagi 'z-10' olib tashlandi, o'rniga 'z-0' yoki shunchaki olib tashlash kifoya */}
         <span
-          className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide shadow-sm z-10 ${categoryStyles[card.category] || "bg-gray-600 text-white"}`}
+          className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide shadow-sm ${categoryStyles[card.category] || "bg-gray-600 text-white"}`}
         >
           {card.category}
         </span>
@@ -43,7 +44,8 @@ function PostCard({ card }) {
               d="M8 7V3m8 3V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             ></path>
           </svg>
-          <span className="z-10">{card.date}</span>
+          {/* TO'G'RILANDI: Bu yerdagi 'z-10' ham olib tashlandi */}
+          <span>{card.date}</span>
         </div>
 
         <h3 className="text-[20px] font-bold text-[#111827] leading-7 mb-3 transition-colors duration-200 group-hover:text-blue-600">
@@ -56,7 +58,7 @@ function PostCard({ card }) {
 
         <div className="mt-auto">
           <Link
-            to={`/posts/${card.id}`} // Dinamik ID manzilga uzatiladi
+            to={`/posts/${card.id}`}
             className="text-[#4F46E5] hover:text-[#3730A3] font-semibold text-[15px] inline-flex items-center gap-2 transition-colors duration-200 group/link"
           >
             Read more

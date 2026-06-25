@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 function Information() {
   return (
     <div>
-      <div className="flex flex-col items-center mt-32">
+      <div className="flex flex-col items-center mt-32 px-2.5">
         <h2 className="font-inter font-bold text-4xl leading-10 space-x-0.5 mb-4">
           Why Choose Blogify?
         </h2>
