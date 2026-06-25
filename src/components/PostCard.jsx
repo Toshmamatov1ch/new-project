@@ -43,7 +43,7 @@ function PostCard({ card }) {
               d="M8 7V3m8 3V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             ></path>
           </svg>
-          <span>{card.date}</span>
+          <span className="z-10">{card.date}</span>
         </div>
 
         <h3 className="text-[20px] font-bold text-[#111827] leading-7 mb-3 transition-colors duration-200 group-hover:text-blue-600">
