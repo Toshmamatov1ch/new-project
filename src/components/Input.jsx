@@ -1,7 +1,7 @@
 import React from "react";
 
 function Input() {
-  return <div></div>;
+  return <input></input>;
 }
 
 export default Input;

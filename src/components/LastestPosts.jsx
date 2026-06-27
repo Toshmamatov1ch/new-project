@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 function LatestPosts() {
   return (
     <div className="text-align mb-32 ">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-stretch md:flex-row md:items-center justify-between">
         <div className="mb-10 text-left">
           <h2 className="text-3xl md:text-[36px] font-extrabold font-inter text-[#111827] tracking-tight mb-2">
             Latest Posts
@@ -18,7 +18,7 @@ function LatestPosts() {
             Check out our most recent articles
           </p>
         </div>
-        <Link to={"/posts"}>
+        <Link to={"/posts"} className="mb-4 ">
           <Button
             text={"View All"}
             variant={"danger"}
