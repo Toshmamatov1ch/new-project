@@ -28,9 +28,14 @@ function Posts() {
 
   return (
     <>
-      {/* HEADER BANNER */}
-      <PostsHero />
-      {/* FILTER BUTTONS (Postlar tepasida joylashgan qismi) */}
+      {/* HEADER BANNER
+        BU YERDA: Oldingi qadamda to'g'rilangan PostsHero komponentingizga 
+        statelarni prop sifatida berib yuboramiz. Shunda inputga yozilgan qiymat 
+        to'g'ridan-to'g'ri shu yerga keladi va pastdagi kartalarni filterlaydi.
+      */}
+      <PostsHero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+      {/* FILTER BUTTONS (Postlar tepasida joylaşgan qismi) */}
       <div className="flex justify-center mt-12 mb-6">
         <div className="inline-flex items-center bg-slate-100/80 p-1.5 rounded-2xl gap-1 sm:gap-2">
           {categories.map((category) => (
@@ -39,7 +44,7 @@ function Posts() {
               onClick={() => setActiveCategory(category)}
               className={`px-5 py-2 text-sm font-medium transition-all duration-200 rounded-xl ${
                 activeCategory === category
-                  ? "bg-white text-slate-900 shadow-sm" // Aktiv holat (image_71cd9d.png dagi kabi)
+                  ? "bg-white text-slate-900 shadow-sm" // Aktiv holat
                   : "text-slate-500 hover:text-slate-800" // Noaktiv holat
               }`}
             >
@@ -50,11 +55,10 @@ function Posts() {
       </div>
 
       {/* POSTS SECTION */}
-      <section className="py-16 text-align">
+      <section className="py-16">
         {filteredPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="text-align  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((item) => (
-              // uuidv4() o'rniga item.id ishlatish performance uchun yaxshiroq
               <PostCard key={item.id} card={item} />
             ))}
           </div>

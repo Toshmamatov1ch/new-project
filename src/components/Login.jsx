@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import LoginImage from "../assets/images/login-image.png";
 
-import Logo from "../assets/icons/SVG.svg";
+import Logo from "../assets/icons/Link.svg";
 import { FaArrowLeft } from "react-icons/fa6";
 import Input from "./Input";
 import Button from "./Button";

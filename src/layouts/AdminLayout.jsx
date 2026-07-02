@@ -5,7 +5,7 @@ function AdminLayout() {
   return (
     <div className="admin-container">
       {/* Bu yerda sizning Sidebar yoki Menyuyingiz bo'lishi mumkin */}
-      <aside>Admin Menu</aside>
+      <aside></aside>
 
       <main className="admin-content">
         {/* 2. Dashboard yoki CreatePosts sahifalari aynan shu Outlet o'rniga kelib o'tiradi */}

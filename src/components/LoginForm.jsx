@@ -1,28 +1,23 @@
-import React from "react";
+import React, { useRef } from "react";
 import Input from "./Input";
 import Button from "./Button";
-
-import { useRef, useEffect } from "react";
-import Login from "./Login";
-
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function LoginForm() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const formRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const baseUrl = import.meta.env.VITE_BASE_URL;
-
   let navigate = useNavigate();
-
-  console.log(baseUrl);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     const loginObj = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value,
     };
 
     try {
@@ -40,44 +35,55 @@ function LoginForm() {
         throw new Error(data.message || "Login xato");
       }
 
-      // Tokenni saqlash (agar API qaytarsa)
-      // localStorage.setItem("access", data.access);
-      // localStorage.setItem("refresh", data.refresh);
       localStorage.setItem("access", data.data.access);
       localStorage.setItem("refresh", data.data.refresh);
 
+      toast.success("Muvaffaqiyatli tizimga kirdingiz!");
+
+      // Login muvaffaqiyatli bo'lsa formani tozalash
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+
       navigate("/admin");
     } catch (error) {
-      toast(error.message);
+      toast.error(error.message);
     }
   }
 
   return (
     <form
+      ref={formRef}
       onSubmit={handleSubmit}
-      className="border border-gray-400 flex flex-col gap-4 px-8 py-6 rounded-2xl"
+      className="border border-gray-400 flex flex-col gap-4 px-8 py-6 rounded-2xl max-w-md mx-auto"
+      autoComplete="off" // Form darajasida keshni o'chirish
     >
       <div>
-        <h1 className="font-extrabold mb-2 text-3xl">Welcome Back</h1>
-        <p className="mb-2 text-gray-400 text-[20px]">
+        <h1 className="font-extrabold mb-2 text-3xl text-left">Welcome Back</h1>
+        <p className="mb-2 text-gray-400 text-[16px] text-left">
           Enter your credentials to access your account
         </p>
       </div>
 
       <Input
         ref={emailRef}
-        type={"email"}
-        label={"Email"}
-        placeholder={"name@gmail.com"}
-      />
-      <Input
-        ref={passwordRef}
-        type={"password"}
-        label={"Password"}
-        placeholder={"******"}
+        label="Email"
+        type="email"
+        placeholder="name@example.com"
+        required
+        autoComplete="off" // Brauzer emailni eslab qolmasligi uchun
       />
 
-      <Button variant="primary" text={"Login"} />
+      <Input
+        ref={passwordRef}
+        label="Password"
+        type="password"
+        placeholder="••••••••"
+        required
+        autoComplete="new-password" // Brauzer parolni eslab qolmasligi uchun eng ishonchli yo'l
+      />
+
+      <Button variant="primary" text={"Login"} type="submit" />
     </form>
   );
 }
