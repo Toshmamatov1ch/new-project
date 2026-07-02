@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import PostCard from "../../components/PostCard";
 
 import { cardsData } from "../../data/cardsData";
+import PostsHero from "../../components/PostsHero";
 
 function Posts() {
   // 1. Kategoriya va Qidiruv uchun statelar
@@ -28,29 +29,7 @@ function Posts() {
   return (
     <>
       {/* HEADER BANNER */}
-      <div className="bg-gradient-to-r from-[#F1F1FE] to-[#F7F1FD] text-white p-6 rounded-xl mt-16">
-        <div className="py-24 flex flex-col items-center justify-center">
-          <h2 className="font-inter font-bold text-6xl text-[#0F1729] mb-4 text-center">
-            Explore Our Posts
-          </h2>
-          <p className="font-inter text-[20px] text-gray-500 mb-8 text-center max-w-2xl">
-            Discover amazing content from talented writers across various topics
-          </p>
-
-          {/* QIDIRUV INPUTI */}
-          <div className="bg-white w-full max-w-md py-3.5 px-4 rounded-2xl flex items-center gap-4 shadow-sm border border-gray-100">
-            <FaSearch className="text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search posts..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="text-gray-600 outline-none grow bg-transparent text-sm"
-            />
-          </div>
-        </div>
-      </div>
-
+      <PostsHero />
       {/* FILTER BUTTONS (Postlar tepasida joylashgan qismi) */}
       <div className="flex justify-center mt-12 mb-6">
         <div className="inline-flex items-center bg-slate-100/80 p-1.5 rounded-2xl gap-1 sm:gap-2">
