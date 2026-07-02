@@ -1,16 +1,15 @@
-// src/components/ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-  // LocalStorage dan tokenni tekshiramiz (yoki auth context'dan)
-  const isAuthenticated = localStorage.getItem("token");
+  // LocalStorage dan boya saqlagan tokenni tekshiramiz
+  const token = localStorage.getItem("access");
 
   // Agar token bo'lmasa, uni /login sahifasiga qaytarib yuboramiz
-  if (!isAuthenticated) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  // Agar login qilgan bo'lsa, o'zi kirmoqchi bo'lgan sahifani ko'rsatamiz
+  // Agar token bo'lsa, ichidagi AdminLayout'ni ko'rsatadi
   return children;
 };
 
