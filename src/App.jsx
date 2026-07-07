@@ -12,7 +12,6 @@ import Dashboard from "./pages/admin/Dashboard";
 import UpdatePosts from "./pages/admin/UpdatePosts";
 import Login from "./components/Login";
 import ErrorPage from "./pages/public/ErrorPage";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const routers = createBrowserRouter([
@@ -55,11 +54,7 @@ function App() {
 
     {
       path: "/admin",
-      element: (
-        <ProtectedRoute>
-          <AdminLayout />
-        </ProtectedRoute>
-      ),
+      element: <AdminLayout />,
       children: [
         {
           index: true,

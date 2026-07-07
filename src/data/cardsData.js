@@ -27,6 +27,7 @@ export const cardsData = [
     title: "The Future of Web Development",
     desc: "Exploring the latest trends and technologies shaping the future of web development.",
     link: "/",
+    status: false,
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ export const cardsData = [
     title: "Mastering Productivity",
     desc: "Proven strategies and tools to boost your productivity and achieve your goals faster.",
     link: "#",
+    status: false,
   },
   {
     id: 3,
@@ -45,6 +47,7 @@ export const cardsData = [
     title: "Design Principles That Matter",
     desc: "Essential design principles every creator should know to build stunning user experiences.",
     link: "#",
+    status: false,
   },
   {
     id: 4,
@@ -54,6 +57,7 @@ export const cardsData = [
     title: "Building Scalable Applications",
     desc: "Learn how to architect and build applications that can scale to millions of users.",
     link: "#",
+    status: false,
   },
   {
     id: 5,
@@ -63,6 +67,7 @@ export const cardsData = [
     title: "The Art of Remote Work",
     desc: "Tips and best practices for thriving in a remote work environment.",
     link: "#",
+    status: false,
   },
   {
     id: 6,
@@ -72,5 +77,6 @@ export const cardsData = [
     title: "Color Theory in Digital Design",
     desc: "Understanding how color affects user perception and behavior in digital products.",
     link: "#",
+    status: false,
   },
 ];
