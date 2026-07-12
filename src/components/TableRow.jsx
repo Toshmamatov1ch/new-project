@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TableRow = ({ post }) => {
   // Status ranglari (Published yoki Draft)
@@ -43,9 +44,12 @@ const TableRow = ({ post }) => {
 
       {/* Actions */}
       <td className="py-4 px-6 text-right space-x-3">
-        <button className="text-blue-600 hover:underline font-medium">
+        <Link
+          to={`/admin/update/${post.id}`} // <-- Boshida mütloqo /admin/ bo'lishi shart!
+          className="text-blue-500 hover:"
+        >
           Edit
-        </button>
+        </Link>
         <button className="text-red-500 hover:underline font-medium">
           Delete
         </button>

@@ -2,6 +2,7 @@ import React from "react";
 import Button from "./Button";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import HeroImg from "../assets/icons/hero.png";
+import { Link } from "react-router-dom";
 function Hero() {
   return (
     <section className=" text-align flex items-center justify-between gap-4">
@@ -17,12 +18,16 @@ function Hero() {
           inspire others with your unique perspective.
         </p>
         <div className="flex flex-col items-start gap-4  md:flex-row">
-          <Button
-            text={"Explore Posts"}
-            variant={"secondary"}
-            icon={<FaLongArrowAltRight />}
-          />
-          <Button text={"Get Started"} variant={"danger"} />
+          <Link to={"/posts"}>
+            <Button
+              text={"Explore Posts"}
+              variant={"secondary"}
+              icon={<FaLongArrowAltRight />}
+            />
+          </Link>
+          <Link to={"/auth"}>
+            <Button text={"Get Started"} variant={"danger"} />
+          </Link>
         </div>
       </div>
       <div>

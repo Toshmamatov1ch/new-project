@@ -1,201 +1,166 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { cardsData } from "../../data/cardsData.js";
-import PostCard from "../../components/PostCard";
+import { usePosts } from "../../components/PostContext"; // Context'ga yo'lni tekshirib oling
+import { FiCalendar, FiArrowLeft, FiUser } from "react-icons/fi";
+import PostCard from "../../components/PostCard"; // Mavjud PostCard komponentingiz yo'li
 
-function PostDetail() {
-  const { id } = useParams(); // URL'dan dinamik ID'ni olamiz
+export default function PostDetail() {
+  const { id } = useParams();
+  const { posts } = usePosts();
 
   // ID bo'yicha joriy postni topamiz
-  const post = cardsData.find((item) => item.id === parseInt(id));
+  const post = posts.find((p) => String(p.id) === String(id));
 
-  // Agar post topilmasa, 404 dizayni
+  // Agar joriy post topilmasa, xatolik sahifasi
   if (!post) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
-        <h2 className="text-3xl font-extrabold text-[#111827] mb-2">
-          Post topilmadi!
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC] font-sans px-4">
+        <h2 className="text-3xl font-extrabold text-slate-900 mb-2">
+          Post Not Found!
         </h2>
-        <p className="text-gray-500 mb-6">
-          Bunday maqola mavjud emas yoki o'chirilgan bo'lishi mumkin.
+        <p className="text-gray-500 text-sm mb-6 text-center">
+          This article does not exist or might have been removed.
         </p>
         <Link
           to="/"
-          className="bg-[#4F46E5] text-white px-6 py-2.5 rounded-xl font-medium hover:bg-[#3730A3] transition-colors"
+          className="px-5 py-2.5 bg-[#4F46E5] text-white text-sm font-semibold rounded-xl shadow-xs hover:bg-[#4338CA] transition"
         >
-          Bosh sahifaga qaytish
+          Back to Home
         </Link>
       </div>
     );
   }
 
-  // "Related Posts" uchun joriy postdan boshqa (maksimal 2 ta) maqolani filter qilamiz
-  const relatedPosts = cardsData
-    .filter((item) => item.id !== post.id)
-    .slice(0, 2);
-
-  // Kategoriya ranglari
-  const categoryStyles = {
-    Technology: "bg-blue-100 text-blue-800",
-    Productivity: "bg-indigo-100 text-indigo-800",
-    Design: "bg-purple-100 text-purple-800",
-  };
+  // DIZAYNDAGI "Related Posts" LOGIKASI:
+  // Joriy maqoladan tashqari, xuddi shu kategoriyadagi yoki boshqa dastlabki 2 ta postni ajratib olamiz
+  const relatedPosts = posts
+    .filter((p) => String(p.id) !== String(id)) // joriy postni chiqarib tashlaymiz
+    .slice(0, 2); // dastlabki 2 tasini olamiz
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* 1. Asosiy maqola konteyneri */}
-      <div className="max-w-200 mx-auto px-6 pt-12 pb-16">
-        {/* Orqaga qaytish havolasi */}
+    <div className="min-h-screen bg-white py-12 px-6 md:px-12 font-sans text-[#0F172A]">
+      <div className="max-w-4xl mx-auto">
+        {/* Back Link */}
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-[#4F46E5] mb-6 transition uppercase tracking-wider"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            ></path>
-          </svg>
-          Back to Posts
+          <FiArrowLeft /> Back to Posts
         </Link>
 
-        {/* Kategoriya Badge'i */}
-        <span
-          className={`inline-block text-xs font-bold px-3 py-1.5 rounded-full mb-4 tracking-wide ${categoryStyles[post.category] || "bg-gray-100 text-gray-800"}`}
-        >
-          {post.category}
-        </span>
+        {/* Category Badge */}
+        <div className="mb-4">
+          <span className="bg-[#4F46E5] text-white text-xs font-bold px-3 py-1 rounded-full shadow-xs">
+            {post.category}
+          </span>
+        </div>
 
-        {/* Katta Bosh Sarlavha (Title) */}
-        <h1 className="text-3xl md:text-[44px] font-extrabold text-[#111827] leading-tight md:leading-13 tracking-tight mb-6">
+        {/* Post Title */}
+        <h1 className="text-3xl md:text-[44px] font-extrabold text-slate-900 leading-tight mb-4 tracking-tight">
           {post.title}
         </h1>
 
-        {/* Muallif va Sana qismi */}
-        <div className="flex items-center gap-6 text-sm text-gray-500 mb-8 pb-8 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              ></path>
-            </svg>
-            <span className="font-medium text-gray-700">John Doe</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 7V3m8 3V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              ></path>
-            </svg>
-            <span>{post.date}</span>
-          </div>
+        {/* Author and Date metadata */}
+        <div className="flex items-center gap-4 text-xs text-gray-400 font-medium mb-8">
+          <span className="flex items-center gap-1.5">
+            <FiUser size={14} />
+            {post.author || "John Doe"}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <FiCalendar size={14} />
+            {post.date}
+          </span>
         </div>
 
-        {/* Asosiy Katta Rasm */}
-        <div className="rounded-6 overflow-hidden shadow-sm mb-10 bg-gray-50 aspect-video">
+        {/* Featured Image */}
+        <div className="w-full h-75 md:h-120 rounded-3xl overflow-hidden mb-10 bg-gray-100">
           <img
             src={post.image}
             alt={post.title}
-            className="w-full h-full object-cover rounded-b-xl"
+            className="w-full h-full object-cover"
           />
         </div>
 
-        {/* Maqola Batafsil Matni (Rich Text / Typography formatida) */}
-        <div className="text-[#374151] text-[17px] leading-7 space-y-6">
-          <p className="text-gray-600 font-normal">
-            {post.desc} The landscape of web development is constantly evolving,
-            and 2024 promises to bring exciting new changes that will shape how
-            we build and interact with web applications.
-          </p>
+        {/* Main Article Content */}
+        <div className="prose max-w-none text-slate-700 text-[15px] md:text-[16px] leading-relaxed mb-20 space-y-6">
+          {/* Agar formadan to'liq matn kiritilgan bo'lsa uni chiqaradi, 
+              aks holda tayyor default matn strukturasi ko'rinadi */}
+          {post.content ? (
+            <p className="whitespace-pre-line">{post.content}</p>
+          ) : (
+            <>
+              <p>
+                The landscape of web development is constantly evolving, and
+                2024 promises to bring exciting new changes that will shape how
+                we build and interact with web applications.
+              </p>
 
-          <h2 className="text-2xl font-bold text-[#111827] pt-4">
-            Modern Frameworks and Tools
-          </h2>
-          <p>
-            The rise of modern frameworks like React, Vue, and Svelte has
-            revolutionized how developers approach building user interfaces.
-            These tools provide powerful abstractions that make it easier to
-            create complex, interactive applications while maintaining clean and
-            maintainable code.
-          </p>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 mb-2">
+                Modern Frameworks and Tools
+              </h2>
+              <p>
+                The rise of modern frameworks like React, Vue, and Svelte has
+                revolutionized how developers approach building user interfaces.
+                These tools provide powerful abstractions that make it easier to
+                create complex, interactive applications while maintaining clean
+                and maintainable code.
+              </p>
 
-          <h2 className="text-2xl font-bold text-[#111827] pt-4">
-            Performance and User Experience
-          </h2>
-          <p>
-            Web performance has become more critical than ever. Users expect
-            lightning-fast load times and smooth interactions. Modern web
-            development focuses heavily on optimizing performance through
-            techniques like code splitting, lazy loading, and efficient caching
-            strategies.
-          </p>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 mb-2">
+                Performance and User Experience
+              </h2>
+              <p>
+                Web performance has become more critical than ever. Users expect
+                lightning-fast load times and smooth interactions. Modern web
+                development focuses heavily on optimizing performance through
+                techniques like code splitting, lazy loading, and efficient
+                caching strategies.
+              </p>
 
-          <h2 className="text-2xl font-bold text-[#111827] pt-4">
-            The Rise of AI Integration
-          </h2>
-          <p>
-            Artificial intelligence is becoming increasingly integrated into web
-            applications, from chatbots and recommendation systems to advanced
-            analytics and personalization features. This trend is only expected
-            to grow as AI technologies become more accessible.
-          </p>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 mb-2">
+                The Rise of AI Integration
+              </h2>
+              <p>
+                Artificial intelligence is becoming increasingly integrated into
+                web applications, from chatbots and recommendation systems to
+                advanced analytics and personalization features. This trend is
+                only expected to grow as AI technologies become more accessible.
+              </p>
 
-          <h2 className="text-2xl font-bold text-[#111827] pt-4">
-            Web3 and Decentralization
-          </h2>
-          <p>
-            The concept of Web3 and decentralized applications is gaining
-            traction. Blockchain technology is being explored for various use
-            cases beyond cryptocurrency, including identity management, content
-            distribution, and more.
-          </p>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 mb-2">
+                Web3 and Decentralization
+              </h2>
+              <p>
+                The concept of Web3 and decentralized applications is gaining
+                traction. Blockchain technology is being explored for various
+                use cases beyond cryptocurrency, including identity management,
+                content distribution, and more.
+              </p>
 
-          <h2 className="text-2xl font-bold text-[#111827] pt-4">Conclusion</h2>
-          <p className="pb-4">
-            The future of web development is bright and full of possibilities.
-            By staying up-to-date with the latest technologies and best
-            practices, developers can create amazing experiences that push the
-            boundaries of what's possible on the web.
-          </p>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 mb-2">
+                Conclusion
+              </h2>
+              <p>
+                The future of web development is bright and full of
+                possibilities. By staying up-to-date with the latest
+                technologies and best practices, developers can create amazing
+                experiences that push the boundaries of what's possible on the
+                web.
+              </p>
+            </>
+          )}
         </div>
-      </div>
 
-      {/* 2. Related Posts Qismi (Pastki kulrang fonli blok) */}
-      <div className="bg-[#F9FAFB] border-t border-gray-100 py-16">
-        <div className="max-w-285 mx-auto px-6">
-          {/* Sarlavha */}
-          <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-10">
+        {/* --- RELATED POSTS QISMI (Dizayndagi pastki qism) --- */}
+        <div className="border-t border-gray-100 pt-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
             Related Posts
           </h2>
 
-          {/* Grid orqali 2 ta related postni chiqarish */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-200">
-            {relatedPosts.map((item) => (
-              // Avval yozgan PostCard'imizni bu yerda qayta ishlatamiz
-              <PostCard key={item.id} card={item} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {relatedPosts.map((relatedPost) => (
+              // O'zingizning tayyor PostCard komponentingizga ma'lumot uzatiladi
+              <PostCard key={relatedPost.id} card={relatedPost} />
             ))}
           </div>
         </div>
@@ -203,5 +168,3 @@ function PostDetail() {
     </div>
   );
 }
-
-export default PostDetail;

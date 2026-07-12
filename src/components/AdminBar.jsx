@@ -6,6 +6,7 @@ import Button from "./Button";
 import { FaArrowLeft, FaRegEdit, FaBars, FaTimes } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
+import { FiLogOut } from "react-icons/fi";
 
 function AdminBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +65,7 @@ function AdminBar() {
           {/* Update Post */}
           <Link
             className="w-full font-medium rounded-xl flex items-center gap-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50/70 py-3 px-4 transition-all duration-200 group"
-            to={"update"}
+            to={"update/:id"}
             onClick={() => setIsOpen(false)}
           >
             <FaRegEdit
@@ -89,13 +90,15 @@ function AdminBar() {
         </div>
 
         {/* Pastki qism (Chiqish tugmasi) */}
-        <div className="p-4 border-t border-gray-100 flex justify-center">
-          <Link to={"/"} className="w-full" onClick={() => setIsOpen(false)}>
-            <Button
-              text={"Log Out"}
-              variant={"danger"}
-              icon={<FaArrowLeft />}
-            />
+        <div className="p-4 border-t border-gray-100 flex justify-center ">
+          <Link
+            to={"/"}
+            className=" flex items-center gap-2 px-16 py-2 rounded-xl transition-colors hover:bg-gray-100
+            "
+            onClick={() => setIsOpen(false)}
+          >
+            <FiLogOut />
+            <p className="text[20px]"> Logout</p>
           </Link>
         </div>
       </aside>
