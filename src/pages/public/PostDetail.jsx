@@ -40,6 +40,16 @@ export default function PostDetail() {
     ? post.created_at.substring(0, 10)
     : post.date || "No date";
 
+  // 🚀 Backendda "author" ham obyekt shaklida keladi: { email, first_name, last_name }
+  const authorName =
+    typeof post.author === "object" && post.author !== null
+      ? [post.author.first_name, post.author.last_name]
+          .filter(Boolean)
+          .join(" ") ||
+        post.author.email ||
+        "John Doe"
+      : post.author || "John Doe";
+
   // DIZAYNDAGI "Related Posts" LOGIKASI:
   // Joriy maqoladan tashqari, xuddi shu kategoriyadagi postlarni ajratib olamiz.
   // Agar shu kategoriyada yetarlicha post bo'lmasa, qolganini boshqa postlar bilan to'ldiramiz.
@@ -82,7 +92,7 @@ export default function PostDetail() {
         <div className="flex items-center gap-4 text-xs text-gray-400 font-medium mb-8">
           <span className="flex items-center gap-1.5">
             <FiUser size={14} />
-            {post.author || "John Doe"}
+            {authorName}
           </span>
           <span className="flex items-center gap-1.5">
             <FiCalendar size={14} />
