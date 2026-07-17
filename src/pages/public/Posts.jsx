@@ -12,11 +12,18 @@ function Posts() {
   // 2. Postlarni PostContext orqali olamiz (fetch logikasi shu yerda takrorlanmaydi)
   const { posts, loading: isLoading, error } = usePosts();
 
+  // Har bir post uchun kategoriya nomini xavfsiz olish
+  // Backendda "category" obyekt shaklida keladi: { id, name } — shuning uchun .name ishlatamiz
+  const getCategoryName = (item) =>
+    typeof item.category === "object" && item.category !== null
+      ? item.category.name
+      : item.category;
+
   // 3. Kategoriyalar ro'yxatini backenddan kelayotgan postlar ichidan
   // dinamik tarzda chiqarib olamiz — shunda ular doim haqiqiy ma'lumotga mos keladi
   const categories = useMemo(() => {
     const unique = new Set(
-      posts.map((item) => item.category).filter((cat) => Boolean(cat)), // bo'sh/undefined qiymatlarni chiqarib tashlaymiz
+      posts.map((item) => getCategoryName(item)).filter((cat) => Boolean(cat)), // bo'sh/undefined qiymatlarni chiqarib tashlaymiz
     );
     return ["All", ...Array.from(unique)];
   }, [posts]);
@@ -24,7 +31,7 @@ function Posts() {
   // 4. Ham Kategoriya, ham Qidiruv (Input) bo'yicha filterlash logikasi
   const filteredPosts = posts.filter((item) => {
     const matchesCategory =
-      activeCategory === "All" || item.category === activeCategory;
+      activeCategory === "All" || getCategoryName(item) === activeCategory;
 
     const matchesSearch = item.title
       ? item.title.toLowerCase().includes(searchQuery.toLowerCase())
