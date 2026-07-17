@@ -28,16 +28,11 @@ function Posts() {
 
   return (
     <>
-      {/* HEADER BANNER
-        BU YERDA: Oldingi qadamda to'g'rilangan PostsHero komponentingizga 
-        statelarni prop sifatida berib yuboramiz. Shunda inputga yozilgan qiymat 
-        to'g'ridan-to'g'ri shu yerga keladi va pastdagi kartalarni filterlaydi.
-      */}
       <PostsHero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       {/* FILTER BUTTONS (Postlar tepasida joylaşgan qismi) */}
       <div className="flex justify-center mt-12 mb-6">
-        <div className="inline-flex items-center bg-slate-100/80 p-1.5 rounded-2xl gap-1 sm:gap-2">
+        <div className="w-90  flex items-center bg-slate-100/80 p-1.5 rounded-2xl">
           {categories.map((category) => (
             <button
               key={category}
