@@ -25,10 +25,13 @@ function Posts() {
         setIsLoading(true);
         setError(null);
 
-        // API manzilini .env orqali olish (production uchun ham ishlaydi)
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+        // API manzilini .env orqali olish (VITE_BASE_URL sizning .env faylingizda mavjud)
+        const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-        const response = await fetch(`${API_URL}/api/posts`);
+        // BASE_URL oxirida "/" bor yoki yo'qligini tekshirib, ikki marta "//" bo'lib qolmasligiga ishonch hosil qilamiz
+        const response = await fetch(
+          `${BASE_URL.replace(/\/$/, "")}/api/posts`,
+        );
 
         if (!response.ok) {
           throw new Error("Ma'lumotlarni yuklashda xatolik yuz berdi");
