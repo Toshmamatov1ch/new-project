@@ -29,8 +29,9 @@ function Posts() {
         const BASE_URL = import.meta.env.VITE_BASE_URL;
 
         // BASE_URL oxirida "/" bor yoki yo'qligini tekshirib, ikki marta "//" bo'lib qolmasligiga ishonch hosil qilamiz
+        // Haqiqiy endpoint: /api/v1/articles/ (oxirida "/" bilan, Django odati)
         const response = await fetch(
-          `${BASE_URL.replace(/\/$/, "")}/api/posts`,
+          `${BASE_URL.replace(/\/$/, "")}/api/v1/articles/`,
         );
 
         if (!response.ok) {
