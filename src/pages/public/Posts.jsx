@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-// icons
-import { FaSearch } from "react-icons/fa";
 import PostCard from "../../components/PostCard";
 import PostsHero from "../../components/PostsHero";
-
-// Agar axios ishlatsangiz (tavsiya etiladi):
-// import axios from "axios";
 
 function Posts() {
   // 1. Kategoriya va Qidiruv uchun statelar
@@ -23,37 +18,54 @@ function Posts() {
 
   // 3. API'dan ma'lumotlarni tortib olish (useEffect)
   useEffect(() => {
+    let isMounted = true; // unmount bo'lgandan keyin state yangilanishining oldini olish
+
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
+        setError(null);
 
-        // BU YERGA backend API manzilingizni yozasiz:
-        // Agarda backend 8000-portda ishga tushgan bo'lsa:
-        const response = await fetch("http://localhost:8000/api/posts");
+        // API manzilini .env orqali olish (production uchun ham ishlaydi)
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
+        const response = await fetch(`${API_URL}/api/posts`);
 
         if (!response.ok) {
           throw new Error("Ma'lumotlarni yuklashda xatolik yuz berdi");
         }
+
         const data = await response.json();
 
-        setPosts(data); // Backenddan kelgan postlarni statega saqlaymiz
+        // Backend har xil formatda qaytarishi mumkin: array yoki { posts: [...] }
+        const postsArray = Array.isArray(data) ? data : data.posts || [];
+
+        if (isMounted) {
+          setPosts(postsArray);
+        }
       } catch (err) {
-        setError(err.message);
+        if (isMounted) {
+          setError(err.message);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchPosts();
-  }, []); // Bo'sh massiv - faqat sahifa birinchi marta yuklanganda ishlaydi
+
+    // Cleanup: komponent unmount bo'lganda flagni o'chiramiz
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // 4. Ham Kategoriya, ham Qidiruv (Input) bo'yicha filterlash logikasi
-  // (Endi cardsData o'rniga api'dan kelgan "posts" ishlatiladi)
   const filteredPosts = posts.filter((item) => {
     const matchesCategory =
       activeCategory === "All" || item.category === activeCategory;
 
-    // Xatolik bermasligi uchun item.title mavjudligini tekshirib olamiz
     const matchesSearch = item.title
       ? item.title.toLowerCase().includes(searchQuery.toLowerCase())
       : false;
@@ -65,7 +77,7 @@ function Posts() {
     <>
       <PostsHero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      {/* FILTER BUTTONS (Postlar tepasida joylashgan qismi) */}
+      {/* FILTER BUTTONS */}
       <div className="flex justify-center mt-12 mb-6">
         <div className="w-90 flex items-center bg-slate-100/80 p-1.5 rounded-2xl">
           {categories.map((category) => (
@@ -74,8 +86,8 @@ function Posts() {
               onClick={() => setActiveCategory(category)}
               className={`px-5 py-2 text-sm font-medium transition-all duration-200 rounded-xl ${
                 activeCategory === category
-                  ? "bg-white text-slate-900 shadow-sm" // Aktiv holat
-                  : "text-slate-500 hover:text-slate-800" // Noaktiv holat
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-500 hover:text-slate-800"
               }`}
             >
               {category}
@@ -86,26 +98,21 @@ function Posts() {
 
       {/* POSTS SECTION */}
       <section className="py-16">
-        {/* 1-holat: Ma'lumot yuklanyapti */}
         {isLoading ? (
           <div className="text-center py-16 text-gray-500 font-medium">
             Loading posts...
           </div>
         ) : error ? (
-          /* 2-holat: Xatolik yuz berdi */
           <div className="text-center py-16 text-red-500 font-medium">
             Error: {error}
           </div>
         ) : filteredPosts.length > 0 ? (
-          /* 3-holat: Postlar muvaffaqiyatli yuklandi va filterlandi */
           <div className="text-align grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((item) => (
               <PostCard key={item.id || item._id} card={item} />
-              // Izoh: Backendda id o'rniga MongoDB'dagi kabi _id bo'lishi ham mumkin
             ))}
           </div>
         ) : (
-          /* 4-holat: Agar qidiruvga yoki kategoriyaga mos post topilmasa */
           <div className="text-center py-16 text-gray-400 font-medium">
             No posts found matching your criteria.
           </div>
