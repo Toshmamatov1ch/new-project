@@ -1,69 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 
 import PostCard from "../../components/PostCard";
 import PostsHero from "../../components/PostsHero";
+import { usePosts } from "../../components/PostContext"; // Yo'lni o'z loyihangizga moslang
 
 function Posts() {
   // 1. Kategoriya va Qidiruv uchun statelar
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Backenddan keladigan postlar va yuklanish holati uchun statelar
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // 2. Postlarni PostContext orqali olamiz (fetch logikasi shu yerda takrorlanmaydi)
+  const { posts, loading: isLoading, error } = usePosts();
 
-  // 2. Kategoriya tugmalari ro'yxati
-  const categories = ["All", "Technology", "Productivity", "Design"];
-
-  // 3. API'dan ma'lumotlarni tortib olish (useEffect)
-  useEffect(() => {
-    let isMounted = true; // unmount bo'lgandan keyin state yangilanishining oldini olish
-
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        // API manzilini .env orqali olish (VITE_BASE_URL sizning .env faylingizda mavjud)
-        const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-        // BASE_URL oxirida "/" bor yoki yo'qligini tekshirib, ikki marta "//" bo'lib qolmasligiga ishonch hosil qilamiz
-        // Haqiqiy endpoint: /api/v1/articles/ (oxirida "/" bilan, Django odati)
-        const response = await fetch(
-          `${BASE_URL.replace(/\/$/, "")}/api/v1/articles/`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Ma'lumotlarni yuklashda xatolik yuz berdi");
-        }
-
-        const data = await response.json();
-
-        // Backend har xil formatda qaytarishi mumkin: array yoki { posts: [...] }
-        const postsArray = Array.isArray(data) ? data : data.posts || [];
-
-        if (isMounted) {
-          setPosts(postsArray);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err.message);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchPosts();
-
-    // Cleanup: komponent unmount bo'lganda flagni o'chiramiz
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // 3. Kategoriyalar ro'yxatini backenddan kelayotgan postlar ichidan
+  // dinamik tarzda chiqarib olamiz — shunda ular doim haqiqiy ma'lumotga mos keladi
+  const categories = useMemo(() => {
+    const unique = new Set(
+      posts.map((item) => item.category).filter((cat) => Boolean(cat)), // bo'sh/undefined qiymatlarni chiqarib tashlaymiz
+    );
+    return ["All", ...Array.from(unique)];
+  }, [posts]);
 
   // 4. Ham Kategoriya, ham Qidiruv (Input) bo'yicha filterlash logikasi
   const filteredPosts = posts.filter((item) => {
@@ -83,7 +39,7 @@ function Posts() {
 
       {/* FILTER BUTTONS */}
       <div className="flex justify-center mt-12 mb-6">
-        <div className="w-90 flex items-center bg-slate-100/80 p-1.5 rounded-2xl">
+        <div className="w-90 flex items-center bg-slate-100/80 p-1.5 rounded-2xl flex-wrap">
           {categories.map((category) => (
             <button
               key={category}
