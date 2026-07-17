@@ -28,7 +28,8 @@ function Posts() {
         setIsLoading(true);
 
         // BU YERGA backend API manzilingizni yozasiz:
-        const response = await fetch("https://api.example.com/posts");
+        // Agarda backend 8000-portda ishga tushgan bo'lsa:
+        const response = await fetch("http://localhost:8000/api/posts");
 
         if (!response.ok) {
           throw new Error("Ma'lumotlarni yuklashda xatolik yuz berdi");
