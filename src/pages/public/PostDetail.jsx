@@ -31,11 +31,29 @@ export default function PostDetail() {
     );
   }
 
+  // 🚀 Backendda "category" obyekt shaklida keladi: { id, name }
+  // PostCard'dagi kabi, bu yerda ham xavfsiz tarzda matnli nomini ajratib olamiz
+  const categoryName = post?.category?.name || post?.category || "Technology";
+
+  // 🚀 Backendda sana odatda "created_at" maydonida keladi (PostCard bilan bir xil mantiq)
+  const formattedDate = post.created_at
+    ? post.created_at.substring(0, 10)
+    : post.date || "No date";
+
   // DIZAYNDAGI "Related Posts" LOGIKASI:
-  // Joriy maqoladan tashqari, xuddi shu kategoriyadagi yoki boshqa dastlabki 2 ta postni ajratib olamiz
-  const relatedPosts = posts
-    .filter((p) => String(p.id) !== String(id)) // joriy postni chiqarib tashlaymiz
-    .slice(0, 2); // dastlabki 2 tasini olamiz
+  // Joriy maqoladan tashqari, xuddi shu kategoriyadagi postlarni ajratib olamiz.
+  // Agar shu kategoriyada yetarlicha post bo'lmasa, qolganini boshqa postlar bilan to'ldiramiz.
+  const sameCategoryPosts = posts.filter((p) => {
+    const pCategoryName = p?.category?.name || p?.category;
+    return String(p.id) !== String(id) && pCategoryName === categoryName;
+  });
+
+  const otherPosts = posts.filter((p) => {
+    const pCategoryName = p?.category?.name || p?.category;
+    return String(p.id) !== String(id) && pCategoryName !== categoryName;
+  });
+
+  const relatedPosts = [...sameCategoryPosts, ...otherPosts].slice(0, 2);
 
   return (
     <div className="min-h-screen bg-white py-12 px-6 md:px-12 font-sans text-[#0F172A]">
@@ -51,7 +69,7 @@ export default function PostDetail() {
         {/* Category Badge */}
         <div className="mb-4">
           <span className="bg-[#4F46E5] text-white text-xs font-bold px-3 py-1 rounded-full shadow-xs">
-            {post.category}
+            {categoryName}
           </span>
         </div>
 
@@ -68,7 +86,7 @@ export default function PostDetail() {
           </span>
           <span className="flex items-center gap-1.5">
             <FiCalendar size={14} />
-            {post.date}
+            {formattedDate}
           </span>
         </div>
 
@@ -83,7 +101,7 @@ export default function PostDetail() {
 
         {/* Main Article Content */}
         <div className="prose max-w-none text-slate-700 text-[15px] md:text-[16px] leading-relaxed mb-20 space-y-6">
-          {/* Agar formadan to'liq matn kiritilgan bo'lsa uni chiqaradi, 
+          {/* Agar formadan to'liq matn kiritilgan bo'lsa uni chiqaradi,
               aks holda tayyor default matn strukturasi ko'rinadi */}
           {post.content ? (
             <p className="whitespace-pre-line">{post.content}</p>
@@ -152,18 +170,20 @@ export default function PostDetail() {
         </div>
 
         {/* --- RELATED POSTS QISMI (Dizayndagi pastki qism) --- */}
-        <div className="border-t border-gray-100 pt-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
-            Related Posts
-          </h2>
+        {relatedPosts.length > 0 && (
+          <div className="border-t border-gray-100 pt-12">
+            <h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
+              Related Posts
+            </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {relatedPosts.map((relatedPost) => (
-              // O'zingizning tayyor PostCard komponentingizga ma'lumot uzatiladi
-              <PostCard key={relatedPost.id} card={relatedPost} />
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {relatedPosts.map((relatedPost) => (
+                // O'zingizning tayyor PostCard komponentingizga ma'lumot uzatiladi
+                <PostCard key={relatedPost.id} card={relatedPost} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
