@@ -1,69 +1,103 @@
-import React, { createContext, useState, useContext } from "react"; // <-- useState mana shu yerda import bo'lishi shart!
+import React, { createContext, useState, useContext, useEffect } from "react";
+import axios from "axios";
 
 const PostContext = createContext();
 
-const initialPosts = [
-  {
-    id: 1,
-    title: "The Future of Web Development",
-    category: "Technology",
-    date: "2025-11-20",
-    status: "Published",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500",
-    description:
-      "The landscape of web development is constantly evolving, and 2024 promises to bring exciting new changes...",
-  },
-  {
-    id: 2,
-    title: "Mastering Productivity",
-    category: "Productivity",
-    date: "2025-11-18",
-    status: "Published",
-    image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=500",
-    description:
-      "Proven strategies and tools to boost your daily workflow and achieve your goals faster.",
-  },
-  {
-    id: 3,
-    title: "Design Principles That Matter",
-    category: "Design",
-    date: "2025-11-15",
-    status: "Draft",
-    image: "https://images.unsplash.com/photo-1541462608141-ad4979e408c9?w=500",
-    description:
-      "Core design principles every creator should know to build beautiful user experiences.",
-  },
-  {
-    id: 4,
-    title: "Building Scalable Applications",
-    category: "Technology",
-    date: "2025-11-12",
-    status: "Published",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500",
-    description:
-      "Learn how to architect applications capable of handling millions of users efficiently.",
-  },
-];
+// Skrinshotdagi asosiy API manzili:
+const BASE_URL = "https://tevoj98108.pythonanywhere.com/api/v1/";
 
 export const PostProvider = ({ children }) => {
-  const [posts, setPosts] = useState(initialPosts);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Yangi post qo'shish
-  const addPost = (newPost) => {
-    setPosts((prevPosts) => [newPost, ...prevPosts]);
+  // 1. Backenddan postlarni (articles) yuklash (GET)
+  // 1. Backenddan postlarni (articles) yuklash (GET)
+
+  // 1. Backenddan postlarni (articles) yuklash (GET)
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${BASE_URL}articles/`);
+
+      // Backenddan kelayotgan response.data.data.results massivini tekshirib olamiz
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data.results)
+      ) {
+        setPosts(response.data.data.results); // To'g'ri massivni state-ga saqlaymiz
+      } else if (response.data && Array.isArray(response.data)) {
+        setPosts(response.data);
+      } else {
+        setPosts([]); // Agar kutilmagan format bo'lsa, bo'sh massiv beramiz
+      }
+    } catch (err) {
+      console.error("Postlarni yuklashda xatolik:", err);
+      setError("Ma'lumotlarni yuklab bo'lmadi.");
+      setPosts([]); // Xatolik yuz berganda crash bo'lmasligi uchun bo'sh massiv qilamiz
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Postni tahrirlash (Update) funksiyasi
-  const updatePost = (id, updatedFields) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        String(post.id) === String(id) ? { ...post, ...updatedFields } : post,
-      ),
-    );
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  // 2. Yangi post yaratish (POST)
+  const addPost = async (newPostData) => {
+    try {
+      const response = await axios.post(`${BASE_URL}articles/`, newPostData);
+      const createdPost = response.data.data || response.data;
+      setPosts((prevPosts) => [createdPost, ...prevPosts]);
+    } catch (err) {
+      console.error("Post qo'shishda xatolik:", err);
+      throw err;
+    }
+  };
+
+  // 3. Postni o'chirish (DELETE)
+  const deletePost = async (id) => {
+    try {
+      await axios.delete(`${BASE_URL}articles/${id}/`);
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+    } catch (err) {
+      console.error("Postni o'chirishda xatolik:", err);
+      throw err;
+    }
+  };
+
+  // 4. Postni tahrirlash (PUT)
+  const updatePost = async (id, updatedFields) => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}articles/${id}/`,
+        updatedFields,
+      );
+      const updatedPost = response.data.data || response.data;
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => (post.id === id ? updatedPost : post)),
+      );
+    } catch (err) {
+      console.error("Postni yangilashda xatolik:", err);
+      throw err;
+    }
   };
 
   return (
-    <PostContext.Provider value={{ posts, addPost, updatePost }}>
+    <PostContext.Provider
+      value={{
+        posts,
+        loading,
+        error,
+        addPost,
+        deletePost,
+        updatePost,
+        fetchPosts,
+      }}
+    >
       {children}
     </PostContext.Provider>
   );

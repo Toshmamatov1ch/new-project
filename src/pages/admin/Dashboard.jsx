@@ -7,7 +7,7 @@ const Dashboard = () => {
     // Bu butun sahifani o'rab turuvchi wrapper. padding (px-6) har doim chetlarni bir xil ushlab turadi.
     <div className="min-h-screen bg-gray-50/50 py-8 px-6 md:px-12 font-sans">
       {/* Dashboard Sarlavhasi */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="max-w-7xl mx-auto mb-8 mt-8">
         <h1 className="text-3xl font-bold text-gray-950">Dashboard</h1>
         <p className="text-gray-400 text-sm mt-1">
           Welcome back! Here's an overview of your blog.

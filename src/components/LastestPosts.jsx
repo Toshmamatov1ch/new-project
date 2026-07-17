@@ -1,13 +1,13 @@
 import React from "react";
 import PostCard from "./PostCard";
-import { usePosts } from "./PostContext.jsx"; // <-- Context'ni import qilamiz (yo'lini tekshirib oling)
+import { usePosts } from "./PostContext.jsx"; // <-- Yo'lini to'g'riligingizga ishonch hosil qiling
 import { v4 as uuidv4 } from "uuid";
 import Button from "./Button.jsx";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function LatestPosts() {
-  // Static cardsData o'rniga Context'dagi dinamik posts'dan foydalanamiz
+  // Context'dagi dinamik posts o'zgaruvchisini olamiz
   const { posts } = usePosts();
 
   return (
@@ -31,13 +31,19 @@ function LatestPosts() {
         </Link>
       </div>
 
-      {/* Grid qismi: Endi dinamik posts massividan dastlabki 3 tasini oladi */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.slice(0, 3).map((item) => (
-          // Har doim barqaror va to'g'ri ishlashi uchun item.id ni key sifatida bergan ma'qul
-          <PostCard key={item.id || uuidv4()} card={item} />
-        ))}
-      </div>
+      {/* Grid qismi: Crash xatoligini oldini olish uchun posts massiv ekanligini tekshiramiz */}
+      {!posts || !Array.isArray(posts) || posts.length === 0 ? (
+        <div className="text-center py-12 text-gray-400 text-lg">
+          Hozircha hech qanday post mavjud emas. Admin panelidan yangi post
+          qo'shing!
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.slice(0, 3).map((item) => (
+            <PostCard key={item.id || uuidv4()} card={item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

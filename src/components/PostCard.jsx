@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function PostCard({ card }) {
+  // 1. Kategoriya nomini obyekt ichidan xavfsiz ajratib olamiz
+  const categoryName = card?.category?.name || card?.category || "Technology";
+
   const categoryStyles = {
     Technology: "bg-[#3B82F6] text-white",
     Productivity: "bg-[#4F46E5] text-white",
@@ -9,6 +12,14 @@ function PostCard({ card }) {
   };
 
   if (!card) return null;
+
+  // 2. Sanani chiroyli formatda kesib olamiz (masalan: "2026-07-12")
+  const formattedDate = card.created_at
+    ? card.created_at.substring(0, 10)
+    : card.date || "No date";
+
+  // 3. Tavsif (description) uchun content yoki desc maydonlarini xavfsiz tekshiramiz
+  const shortDescription = card.description || card.desc || card.content || "";
 
   return (
     <div className="border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col h-full bg-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-2 group">
@@ -19,11 +30,13 @@ function PostCard({ card }) {
           alt={card.title}
           className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
         />
-        {/* TO'G'RILANDI: Bu yerdagi 'z-10' olib tashlandi, o'rniga 'z-0' yoki shunchaki olib tashlash kifoya */}
         <span
-          className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide shadow-sm ${categoryStyles[card.category] || "bg-gray-600 text-white"}`}
+          className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide shadow-sm ${
+            categoryStyles[categoryName] || "bg-gray-600 text-white"
+          }`}
         >
-          {card.category}
+          {categoryName}{" "}
+          {/* 🚀 Obyekt emas, uning matnli nomi render bo'ladi */}
         </span>
       </div>
 
@@ -44,16 +57,17 @@ function PostCard({ card }) {
               d="M8 7V3m8 3V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             ></path>
           </svg>
-          {/* TO'G'RILANDI: Bu yerdagi 'z-10' ham olib tashlandi */}
-          <span>{card.date}</span>
+          <span>{formattedDate}</span>
         </div>
 
         <h3 className="text-[20px] font-bold text-[#111827] leading-7 mb-3 transition-colors duration-200 group-hover:text-blue-600">
           {card.title}
         </h3>
 
-        <p className="text-[#6B7280] text-[15px] leading-6 mb-6 grow">
-          {card.desc}
+        <p className="text-[#6B7280] text-[15px] leading-6 mb-6 grow line-clamp-3">
+          {shortDescription.length > 120
+            ? shortDescription.substring(0, 120) + "..."
+            : shortDescription}
         </p>
 
         <div className="mt-auto">
